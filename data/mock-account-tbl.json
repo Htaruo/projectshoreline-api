@@ -1,0 +1,30 @@
+{
+    "jdoe.24": {
+        "id": "d99fdb66-7aa5-55b2-bad1-fb97bccc369b",
+        "fullName": "John Doe",
+        "hash": "$2b$12$oXCoZhHY8/tVaAaKrxHPbeeA7vPTOZJy0lNwzoaAf0mg0Bsu/Wv9.",
+        "userLevel": 0,
+        "createdAt": 1774010581
+    },
+    "mod.val": {
+        "id": "ceeea63f-a258-5987-9a1b-6dbd2f12ddea",
+        "fullName": "Moderator No. 1",
+        "hash": "$2b$12$t0PulUp7Cj4b/0XbcEYdfuo9vgIs8FpZpazu4ABDv6b6SBMQ9IKHK",
+        "userLevel": 1,
+        "createdAt": 1774010796
+    },
+    "admin.baybay": {
+        "id": "f93c7b66-4a14-5cb7-9530-6101130c2054",
+        "fullName": "Baybay Admin",
+        "hash": "$2b$12$mZ1VBkn5c4ywql2W8klfk.8XAzvNZ3v8zCShxkiwm1Cz2d5swZIsC",
+        "userLevel": 2,
+        "createdAt": 1774010936
+    },
+    "root.vsu": {
+        "id": "59ae80fa-0b20-57f8-80da-1e7b5a38ddfd",
+        "fullName": "Super Admin",
+        "hash": "$2b$12$D5DOsXZ456sn09JEAzoUOOPrYK351fdzKXtoA5CCipyAhjcuHxX8K",
+        "userLevel": 3,
+        "createdAt": 1774011019
+    }
+}
