@@ -4,6 +4,7 @@ ProjectShoreline-API v0.9.0
 """
 import json
 import hashlib
+import os
 from datetime import datetime
 import bcrypt
 from flask import Flask, request, jsonify
@@ -11,6 +12,9 @@ from flask_cors import CORS
 
 app = Flask("projectshoreline-api")
 CORS(app)
+
+# Base directory — works correctly on Vercel and locally
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @app.route("/")
 def index():
@@ -30,10 +34,10 @@ def authorize():
         access_token = generate_access_token(uname, user_level)
         message = ""
     return set_cors({
-    "accessToken": access_token,
-    "userLevel": user_level,
-    "fullName": full_name,
-    "message": message,
+        "accessToken": access_token,
+        "userLevel": user_level,
+        "fullName": full_name,
+        "message": message,
     })
 
 @app.route("/get_contents", methods=["GET"])
@@ -49,30 +53,29 @@ def get_contents():
     expected_token = generate_access_token(uname, user_level)
     if not (0 <= user_level <= 4) or access_token != expected_token:
         return set_cors({"message": "401: Unauthorized"}), 401
-    return set_cors({ "contents": load_contents() })
+    return set_cors({"contents": load_contents()})
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return set_cors({"message":"Page not found."})
+    return set_cors({"message": "Page not found."})
 
 
 ##################
-# utils #
+# utils          #
 ##################
 def authorize_user(uname, pw):
     """ Authenticate user login. """
-# Use actual No/SQL in real projects.
-    with open(f"data/mock-account-tbl.json") as file:
+    # Use actual No/SQL in real projects.
+    path = os.path.join(BASE_DIR, "data", "mock-account-tbl.json")
+    with open(path) as file:
         accounts = json.load(file)
-        if uname not in accounts:
-            return -1, ""
+    if uname not in accounts:
+        return -1, ""
     account = accounts[uname]
     hashed = account["hash"].encode()
-    
-    if bcrypt.hashpw(pw.encode(), hashed):
-        user_level = account["userLevel"]
-        full_name = account["fullName"]
-        return user_level, full_name
+    # FIX: use checkpw (hashpw always returns truthy bytes)
+    if bcrypt.checkpw(pw.encode(), hashed):
+        return account["userLevel"], account["fullName"]
     return -1, ""
 
 def generate_access_token(uname, user_level):
@@ -85,7 +88,8 @@ def generate_access_token(uname, user_level):
 def load_contents():
     """ Load all contents. """
     # Use actual No/SQL in real projects.
-    with open(f"data/mock-content-tbl.json") as file:
+    path = os.path.join(BASE_DIR, "data", "mock-content-tbl.json")
+    with open(path) as file:
         return json.load(file)
 
 def set_cors(payload):
